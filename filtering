@@ -1,0 +1,23 @@
+% this is the first step of ERP/EEG analysis - data filtering
+
+clear;clc;eeglab
+rawpath = '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test';
+cd(rawpath)
+
+for i = 13
+    % load markers changed .set file 
+    EEG = pop_loadbv(rawpath, strcat('SCOVR_0',num2str(i),'.vhdr'));
+    EEG.setname = num2str(i)
+    EEG = eeg_checkset(EEG);
+    % filtering for time domain analysis,
+    EEG = pop_eegfiltnew(EEG, 0.5, 0); %low cutoff 0.5Hz
+    EEG = eeg_checkset(EEG);
+    EEG = pop_eegfiltnew(EEG, 0, 30); % high cutoff 30Hz
+    EEG = eeg_checkset(EEG);
+
+    % Channel locations
+    EEG = pop_chanedit(EEG, 'lookup','/Users/yangwang/Documents/MATLAB/eeglab2022.0/plugins/dipfit/standard_BESA/standard-10-5-cap385.elp','append',63,'changefield',{64 'labels' 'FCz'},'lookup','/Users/yangwang/Documents/MATLAB/eeglab2022.0/plugins/dipfit/standard_BESA/standard-10-5-cap385.elp','setref',{'1:64' 'FCz'});
+    EEG = eeg_checkset(EEG);
+    
+    EEG = pop_saveset(EEG, 'filename',strcat(num2str(i),'_filt.set'), 'filepath', rawpath);
+end
