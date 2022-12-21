@@ -1,0 +1,17 @@
+clear;eeglab
+rawpath = '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test';
+cd(rawpath)
+
+for i = 13
+    % load .set file after filtering
+    EEG = pop_loadset('filename',strcat(num2str(i),'_filt.set'), 'filepath', rawpath);
+    EEG = eeg_checkset( EEG );
+    
+    % rebuild FCZ and rereference to average 
+    EEG = pop_reref(EEG, [],'refloc',struct('labels',{'FCz'},'type',{''},'theta',{0},'radius',{0.12662},'X',{32.9279},'Y',{0},'Z',{78.363},'sph_theta',{0},'sph_phi',{67.208},'sph_radius',{85},'urchan',{64},'ref',{'FCz'},'datachan',{0}));
+    EEG = eeg_checkset(EEG);
+    EEG = pop_reref( EEG, [] );
+    
+    % save .set
+    EEG = pop_saveset(EEG, 'filename',strcat(num2str(i),'_filt_reref.set'), 'filepath', '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test');
+end
