@@ -1,0 +1,11 @@
+clear;clc;eeglab
+rawpath = '/Users/wangyang/Desktop/EEG';
+cd(rawpath)
+% import EEG raw data
+for i = 136:136
+    EEG = pop_loadbv(rawpath,strcat('SOCIALEEG', num2str(i), '_Self.vhdr'));
+    EEG.setname = num2str(i);
+    EEG = eeg_checkset(EEG);
+    EEG = pop_saveset(EEG, 'filename',strcat(num2str(i),'markerchanged.set'), 'filepath', '/Users/wangyang/Desktop/EEG/Yang Markers Changed/');
+end
+    
