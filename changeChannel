@@ -1,0 +1,17 @@
+clear;eeglab
+rawpath = '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test';
+cd(rawpath)
+
+% select channels
+for i = 13
+    % load .set file after epoching
+    EEG = pop_loadset('filename',strcat(num2str(i),'_filt_reref_epoch.set'), 'filepath', rawpath);
+    EEG.setname = num2str(i);
+    EEG = eeg_checkset(EEG);
+    
+    EEG = pop_select(EEG, 'nochannel', [65 66]);
+    
+    %save data
+    EEG = pop_saveset(EEG, 'filename',strcat(num2str(i),'_filt_reref_epoch_channel.set'), 'filepath', '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test');
+end
+
