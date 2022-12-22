@@ -1,0 +1,27 @@
+clear;clc;eeglab
+rawpath = '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test';
+cd(rawpath)
+
+for i = 13
+    % load rerefed .set file 
+    EEG = pop_loadset('filename',strcat(num2str(i),'_filt_reref.set'), 'filepath', rawpath);
+    EEG = eeg_checkset( EEG );
+    
+    % epoch for CHEPS pain stimulation
+    EEG = pop_epoch(EEG, {'S 16' 'S 17', 'S 26', 'S 27', 'S 36', 'S 37', 'S 46', 'S 47', 'S 51', 'S 50'}, [-0.2 2.5]);
+    EEG = eeg_checkset(EEG);
+    
+%     % epoch for anticipation cues
+%     EEG = pop_epoch(EEG, {'S 11' 'S111'}, [-0.4 2]);
+    
+    % prestimulus removal for CHEPS pain stimulation
+    EEG = pop_rmbase(EEG, [-200 0]);
+    EEG = eeg_checkset(EEG);
+    
+%     % prestimulus removal for anticipation cues
+%     EEG = pop_rmbase(EEG, [-400 0]);
+%     EEG = eeg_checkset(EEG);
+    
+    EEG = pop_saveset(EEG, 'filename',strcat(num2str(i),'_filt_reref_epoch.set'), 'filepath', '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test');
+end
+    
