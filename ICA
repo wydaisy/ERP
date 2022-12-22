@@ -1,0 +1,8 @@
+clear;clc;eeglab
+rawpath = '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test';
+
+for i = 13
+    EEG = pop_loadset('filename', strcat(num2str(i),'_filt_reref_epoch_channel.set'), 'filepath', '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test');
+    EEG = pop_runica(EEG,'icatype','runica','extended', 1);
+    EEG = pop_saveset(EEG, 'filename',strcat(num2str(i),'_ica.set'), 'filepath', '/Users/yangwang/OneDrive - University of Maryland Baltimore/Test');
+end
